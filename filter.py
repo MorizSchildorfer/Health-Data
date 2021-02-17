@@ -1,8 +1,9 @@
 import csv
+import pandas
 
 data = []
 row_index = []
-with open('weirds.csv', encoding='utf-8') as csv_file:
+with open('list.csv', encoding='utf-8') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     line_count = 0
     for row in csv_reader:
@@ -24,9 +25,11 @@ fail_count = 0
 fail_set = set()
 print("S", status_index, "\nC", con_index)
 # keywords = ["hepatitis a", "hepatitis-a", "hepatitis b", "hepatitis-b", "hepatitis c", "hepatitis-c"]
-keywords = ["hepatitis a"]
+keywords = ["hepatitis a", "hepatitis-a"]
 count_full = 0
 weirdos = []
+hep_a_data = []
+
 for row in data:
     full_text = ", ".join(row)
     a = False
@@ -41,6 +44,7 @@ for row in data:
         if " a" in row[con_index].lower():
             hep_set.add(row[con_index].lower())
         continue
+    hep_a_data.append(row)
     if row[status_index] not in status_counts:
         status_counts[row[status_index]] = 1
     else:
@@ -55,3 +59,6 @@ for x in weirdos:
 print("Status", status_counts)
 print("Fails", fail_count)   
 print("Full", count_full) 
+
+# df = pandas.DataFrame(hep_a_data, columns=row_index)
+# df.to_csv('list.csv', index=False)
